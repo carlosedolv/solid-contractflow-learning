@@ -1,38 +1,43 @@
 package com.carlosedolv.contractflow.services.impl.picpay;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.carlosedolv.contractflow.entities.Contract;
 import com.carlosedolv.contractflow.entities.Installment;
+import com.carlosedolv.contractflow.repositories.InstallmentRepository;
 import com.carlosedolv.contractflow.services.contracts.FeeCalculator;
-import com.carlosedolv.contractflow.services.contracts.InstallmentDateService;
+import com.carlosedolv.contractflow.services.contracts.InstallmentDateCalculator;
 import com.carlosedolv.contractflow.services.contracts.OnlinePaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 public class PicPayPaymentService implements OnlinePaymentService {
 
-	private final InstallmentDateService dateService;
+	private final InstallmentDateCalculator dateCalculator;
 	private final FeeCalculator feeCalculator;
 
-	public PicPayPaymentService(InstallmentDateService dateService, FeeCalculator feeCalculator) {
-		this.dateService = dateService;
+	public PicPayPaymentService(InstallmentDateCalculator dateCalculator, FeeCalculator feeCalculator) {
+		this.dateCalculator = dateCalculator;
 		this.feeCalculator = feeCalculator;
 	}
 
 	@Override
 	public List<Installment> processInstallments(Contract contract) {
 		List<Installment> installments = new ArrayList<>();
-		Double baseInstallment = contract.getTotal() / contract.getInstallmentQuantity();
+        BigDecimal installmentQuantity = BigDecimal.valueOf(contract.getInstallmentQuantity());
+		BigDecimal baseInstallment = contract.getTotal().divide(installmentQuantity, 2, RoundingMode.HALF_UP);
 
 		for (int i = 0; i < contract.getInstallmentQuantity(); i++) {
-			Instant dateInstallment = dateService.calculate(contract.getDate(), i + 1);
-			Double monthlyFee = feeCalculator.applyMonthlyFee(baseInstallment, i + 1);
-			Double paymentFee = feeCalculator.applyPaymentFee(monthlyFee);
-
+			LocalDate dateInstallment = dateCalculator.calculate(contract.getDate(), i + 1);
+			BigDecimal monthlyFee = feeCalculator.applyMonthlyFee(baseInstallment, i + 1);
+			BigDecimal paymentFee = feeCalculator.applyPaymentFee(monthlyFee);
 			installments.add(new Installment(null, dateInstallment, paymentFee, contract));
 		}
 		return installments;
 	}
-
 }

@@ -1,13 +1,16 @@
     package com.carlosedolv.contractflow.utils;
 
+    import java.math.BigDecimal;
     import java.time.Instant;
+    import java.time.LocalDate;
     import java.time.format.DateTimeParseException;
     import java.util.InputMismatchException;
     import java.util.Scanner;
 
     import com.carlosedolv.contractflow.exceptions.InvalidDateException;
-    import com.carlosedolv.contractflow.exceptions.InvalidDoubleException;
+    import com.carlosedolv.contractflow.exceptions.InvalidBigDecimalException;
     import com.carlosedolv.contractflow.exceptions.InvalidIntegerException;
+    import org.springframework.cglib.core.Local;
 
     public final class InputReader {
         private InputReader() {
@@ -31,29 +34,29 @@
 
         }
 
-        public static Double readPositiveDouble(Scanner sc) {
+        public static BigDecimal readPositiveBigDecimal(Scanner sc) {
             try {
-                Double value = sc.nextDouble();
+                BigDecimal value = sc.nextBigDecimal();
                 sc.nextLine();
 
-                if (value <= 0) {
-                    throw new InvalidDoubleException("The value must be greater than zero.");
+                if (value.compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new InvalidBigDecimalException("The value must be greater than zero.");
                 }
 
                 return value;
             } catch (InputMismatchException e) {
                 sc.nextLine();
-                throw new InvalidDoubleException("Invalid input! Please enter an double.");
+                throw new InvalidBigDecimalException("Invalid input! Please enter an double.");
             }
 
         }
 
-        public static Instant readDate(Scanner sc) {
+        public static LocalDate readDate(Scanner sc) {
             try {
                 String dateStr = sc.nextLine();
                 return DateFormatter.parseDate(dateStr);
             } catch (DateTimeParseException e) {
-                throw new InvalidDateException("Invalid input! Please enter format dd/MM/yyyy HH:mm");
+                throw new InvalidDateException("Invalid input! Please enter format (dd/MM/yyyy)");
             }
         }
     }

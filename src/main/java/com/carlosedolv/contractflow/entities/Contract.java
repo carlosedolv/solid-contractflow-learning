@@ -2,18 +2,17 @@ package com.carlosedolv.contractflow.entities;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.Instant;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.carlosedolv.contractflow.enums.PaymentType;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "contracts")
 public class Contract implements Serializable {
     @Serial
 	private static final long serialVersionUID = 1L;
@@ -22,9 +21,11 @@ public class Contract implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private int number;
-	private Instant date;
-	private Double total;
+	private LocalDate date;
+	private BigDecimal total;
 	private int installmentQuantity;
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 
 	@OneToMany(mappedBy = "contract")
 	private List<Installment> installments = new ArrayList<>();
@@ -32,13 +33,14 @@ public class Contract implements Serializable {
 	public Contract() {
 	}
 
-	public Contract(Long id, int number, Instant date, Double total, int installmentQuantity) {
+	public Contract(Long id, int number, LocalDate date, BigDecimal total, int installmentQuantity, PaymentType paymentType) {
 		super();
 		this.id = id;
 		this.number = number;
 		this.date = date;
 		this.total = total;
 		this.installmentQuantity = installmentQuantity;
+        this.paymentType = paymentType;
 	}
 
 	public Long getId() {
@@ -57,19 +59,19 @@ public class Contract implements Serializable {
 		this.number = number;
 	}
 
-	public Instant getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Instant date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
-	public Double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
@@ -77,7 +79,15 @@ public class Contract implements Serializable {
 		return installmentQuantity;
 	}
 
-	public void setInstallmentQuantity(int installmentQuantity) {
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public void setInstallmentQuantity(int installmentQuantity) {
 		this.installmentQuantity = installmentQuantity;
 	}
 
@@ -104,7 +114,7 @@ public class Contract implements Serializable {
 			return false;
 		Contract other = (Contract) obj;
 		return Objects.equals(date, other.date) && Objects.equals(id, other.id)
-				&& installmentQuantity == other.installmentQuantity && Objects.equals(installments, other.installments)
+				&& installmentQuantity == other.installmentQuantity && paymentType == other.paymentType && Objects.equals(installments, other.installments)
 				&& number == other.number && Objects.equals(total, other.total);
 	}
 
