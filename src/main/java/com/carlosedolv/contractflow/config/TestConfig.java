@@ -27,6 +27,11 @@ public class TestConfig implements CommandLineRunner {
                 PaymentType.DEBIT
         );
 
+        createContract(1001, LocalDate.now(),
+                new BigDecimal("500.00"), 3,
+                PaymentType.DEBIT
+        );
+
         createContract(1002, LocalDate.now(),
                 new BigDecimal("2400.00"), 12,
                 PaymentType.CREDIT

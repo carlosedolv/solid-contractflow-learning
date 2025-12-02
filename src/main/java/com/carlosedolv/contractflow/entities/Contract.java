@@ -22,7 +22,8 @@ public class Contract implements Serializable {
 	private Long id;
 	private int number;
 	private LocalDate date;
-	private BigDecimal total;
+	private BigDecimal paymentBase;
+    private BigDecimal paymentAmount;
 	private int installmentQuantity;
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
@@ -33,12 +34,13 @@ public class Contract implements Serializable {
 	public Contract() {
 	}
 
-	public Contract(Long id, int number, LocalDate date, BigDecimal total, int installmentQuantity, PaymentType paymentType) {
+	public Contract(Long id, int number, LocalDate date, BigDecimal paymentBase, int installmentQuantity, PaymentType paymentType) {
 		super();
 		this.id = id;
 		this.number = number;
 		this.date = date;
-		this.total = total;
+		this.paymentBase = paymentBase;
+        this.paymentAmount = BigDecimal.ZERO;
 		this.installmentQuantity = installmentQuantity;
         this.paymentType = paymentType;
 	}
@@ -67,13 +69,21 @@ public class Contract implements Serializable {
 		this.date = date;
 	}
 
-	public BigDecimal getTotal() {
-		return total;
+	public BigDecimal getPaymentBase() {
+		return paymentBase;
 	}
 
-	public void setTotal(BigDecimal total) {
-		this.total = total;
+	public void setPaymentBase(BigDecimal paymentBase) {
+		this.paymentBase = paymentBase;
 	}
+
+    public BigDecimal getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(BigDecimal paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
 
 	public int getInstallmentQuantity() {
 		return installmentQuantity;
@@ -101,7 +111,7 @@ public class Contract implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, id, installmentQuantity, installments, number, total);
+		return Objects.hash(date, id, installmentQuantity, installments, number, paymentBase);
 	}
 
 	@Override
@@ -115,7 +125,7 @@ public class Contract implements Serializable {
 		Contract other = (Contract) obj;
 		return Objects.equals(date, other.date) && Objects.equals(id, other.id)
 				&& installmentQuantity == other.installmentQuantity && paymentType == other.paymentType && Objects.equals(installments, other.installments)
-				&& number == other.number && Objects.equals(total, other.total);
+				&& number == other.number && Objects.equals(paymentBase, other.paymentBase);
 	}
 
 }

@@ -2,7 +2,6 @@ package com.carlosedolv.contractflow.controllers;
 
 import com.carlosedolv.contractflow.entities.Contract;
 import com.carlosedolv.contractflow.services.ContractService;
-import com.carlosedolv.contractflow.services.core.ContractProcessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,12 @@ import java.util.List;
 @RequestMapping("/contracts")
 public class ContractController {
 
+    private final ContractService service;
+
     @Autowired
-    private ContractService service;
+    public ContractController(ContractService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<Contract>> findAll() {
@@ -34,14 +37,14 @@ public class ContractController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Contract> update(@PathVariable Long id, @RequestBody Contract contract) {
         Contract obj = service.update(id, contract);
         return ResponseEntity.ok().body(obj);
 
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Contract> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

@@ -63,6 +63,10 @@ public class Installment implements Serializable {
         return contract;
     }
 
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
     @Override
 	public int hashCode() {
 		return Objects.hash(date, id, price);
