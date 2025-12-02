@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.carlosedolv.contractflow.enums.PaymentType;
+import com.carlosedolv.contractflow.entities.enums.PaymentType;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,7 +27,7 @@ public class Contract implements Serializable {
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
-	@OneToMany(mappedBy = "contract")
+	@OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Installment> installments = new ArrayList<>();
 	
 	public Contract() {

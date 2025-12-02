@@ -2,6 +2,7 @@ package com.carlosedolv.contractflow.services;
 
 import com.carlosedolv.contractflow.entities.Contract;
 import com.carlosedolv.contractflow.repositories.ContractRepository;
+import com.carlosedolv.contractflow.services.core.ContractProcessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

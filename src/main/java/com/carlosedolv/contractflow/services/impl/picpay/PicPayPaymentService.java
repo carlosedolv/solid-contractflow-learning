@@ -9,12 +9,11 @@ import java.util.List;
 
 import com.carlosedolv.contractflow.entities.Contract;
 import com.carlosedolv.contractflow.entities.Installment;
-import com.carlosedolv.contractflow.repositories.InstallmentRepository;
+import com.carlosedolv.contractflow.entities.enums.PaymentType;
+import com.carlosedolv.contractflow.exceptions.InvalidPaymentMethodException;
 import com.carlosedolv.contractflow.services.contracts.FeeCalculator;
 import com.carlosedolv.contractflow.services.contracts.InstallmentDateCalculator;
 import com.carlosedolv.contractflow.services.contracts.OnlinePaymentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 public class PicPayPaymentService implements OnlinePaymentService {
 

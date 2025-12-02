@@ -1,4 +1,4 @@
-package com.carlosedolv.contractflow.enums;
+package com.carlosedolv.contractflow.entities.enums;
 
 public enum PaymentType {
     CREDIT("credit"),

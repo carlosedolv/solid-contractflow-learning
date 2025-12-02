@@ -1,13 +1,11 @@
 package com.carlosedolv.contractflow.factories;
 
-import com.carlosedolv.contractflow.enums.PaymentType;
+import com.carlosedolv.contractflow.entities.enums.PaymentType;
 import com.carlosedolv.contractflow.services.contracts.InstallmentDateCalculator;
-import com.carlosedolv.contractflow.services.impl.picpay.calculators.CreditCardDateCalculator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -25,10 +23,10 @@ public class DateCalculatorFactory {
         calculators.put(PaymentType.PIX,  pixCalc);
     }
 
-    public InstallmentDateCalculator getCalculator(PaymentType paymentType) throws IllegalAccessException {
+    public InstallmentDateCalculator getCalculator(PaymentType paymentType) {
         InstallmentDateCalculator calculator = calculators.get(paymentType);
         if(calculator == null) {
-            throw new IllegalAccessException("No calculator for payment type: " + paymentType);
+            throw new IllegalArgumentException("No calculator for payment type: " + paymentType);
         }
         return calculator;
     }
