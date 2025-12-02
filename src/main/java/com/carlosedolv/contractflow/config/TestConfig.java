@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.carlosedolv.contractflow.entities.enums.PaymentType;
-import com.carlosedolv.contractflow.services.core.ContractProcessorService;
+import com.carlosedolv.contractflow.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import com.carlosedolv.contractflow.entities.Contract;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
     @Autowired
-    ContractProcessorService processorService;
+    private ContractService service;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -57,7 +57,7 @@ public class TestConfig implements CommandLineRunner {
                     paymentType
             );
 
-            Contract saved = processorService.processContract(contract);
+            Contract saved = service.insert(contract);
             System.out.println("✅ Contract " + number + " created (ID: " + saved.getId() + ")");
 
         } catch (Exception e) {
