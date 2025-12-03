@@ -1,4 +1,4 @@
-package com.carlosedolv.contractflow.services.impl.picpay.calculators;
+package com.carlosedolv.contractflow.services.impl.picpay.calculators.date;
 
 import java.time.LocalDate;
 

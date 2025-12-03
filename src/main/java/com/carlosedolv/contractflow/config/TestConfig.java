@@ -23,22 +23,17 @@ public class TestConfig implements CommandLineRunner {
         System.out.println("=== Populating Database with Sample Data ===");
 
         createContract(1001, LocalDate.now(),
-                new BigDecimal("12400.00"), 24,
+                new BigDecimal("1000.00"), 3,
                 PaymentType.DEBIT
         );
 
         createContract(1001, LocalDate.now(),
-                new BigDecimal("500.00"), 3,
-                PaymentType.DEBIT
-        );
-
-        createContract(1002, LocalDate.now(),
-                new BigDecimal("2400.00"), 12,
+                new BigDecimal("1000.00"), 3,
                 PaymentType.CREDIT
         );
 
-        createContract(1003, LocalDate.now(),
-                new BigDecimal("6732.00"), 1,
+        createContract(1002, LocalDate.now(),
+                new BigDecimal("1000.00"), 1,
                 PaymentType.PIX
         );
 

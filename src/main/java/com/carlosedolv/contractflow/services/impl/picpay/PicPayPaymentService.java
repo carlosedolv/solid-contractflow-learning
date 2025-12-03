@@ -9,6 +9,7 @@ import java.util.List;
 import com.carlosedolv.contractflow.entities.Contract;
 import com.carlosedolv.contractflow.entities.Installment;
 import com.carlosedolv.contractflow.factories.DateCalculatorFactory;
+import com.carlosedolv.contractflow.factories.FeeCalculatorFactory;
 import com.carlosedolv.contractflow.services.contracts.FeeCalculator;
 import com.carlosedolv.contractflow.services.contracts.InstallmentDateCalculator;
 import com.carlosedolv.contractflow.services.contracts.OnlinePaymentService;
@@ -18,11 +19,11 @@ import org.springframework.stereotype.Service;
 public class PicPayPaymentService implements OnlinePaymentService {
 
 	private final DateCalculatorFactory dateCalculatorFactory;
-	private final FeeCalculator feeCalculator;
+	private final FeeCalculatorFactory feeCalculatorFactory;
 
-	public PicPayPaymentService(DateCalculatorFactory dateCalculatorFactory, FeeCalculator feeCalculator) {
+	public PicPayPaymentService(DateCalculatorFactory dateCalculatorFactory, FeeCalculatorFactory feeCalculatorFactory) {
 		this.dateCalculatorFactory = dateCalculatorFactory;
-		this.feeCalculator = feeCalculator;
+		this.feeCalculatorFactory = feeCalculatorFactory;
 	}
 
 	@Override
@@ -32,6 +33,8 @@ public class PicPayPaymentService implements OnlinePaymentService {
 		BigDecimal baseInstallment = contract.getPaymentBase().divide(installmentQuantity, 2, RoundingMode.HALF_UP);
 
         InstallmentDateCalculator dateCalculator = dateCalculatorFactory.getCalculator(contract.getPaymentType());
+        FeeCalculator feeCalculator = feeCalculatorFactory.getCalculator(contract.getPaymentType());
+
         BigDecimal amount = BigDecimal.ZERO;
 		for (int i = 0; i < contract.getInstallmentQuantity(); i++) {
 			LocalDate dateInstallment = dateCalculator.calculate(contract.getDate(), i + 1);

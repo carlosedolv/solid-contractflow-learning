@@ -1,12 +1,12 @@
-package com.carlosedolv.contractflow.services.impl.picpay.calculators;
+package com.carlosedolv.contractflow.services.impl.picpay.calculators.fee;
 
 import com.carlosedolv.contractflow.services.contracts.FeeCalculator;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component("picPayFeeCalculator")
-public class PicPayFeeCalculator implements FeeCalculator{
+@Component("creditCardFeeCalculator")
+public class CreditCardFeeCalculator implements FeeCalculator{
 
 	@Override
 	public BigDecimal applyMonthlyFee(BigDecimal base, int month) {
